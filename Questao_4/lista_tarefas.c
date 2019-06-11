@@ -76,18 +76,21 @@ static int __init lista_tarefas_init(void){
 }
 
 static void __exit lista_tarefas_exit(void){
-   device_destroy(lista_tarefas_class, MKDEV(majorNumber, 0)); // remove the device
-   class_unregister(lista_tarefas_class);                      // unregister the device class
-   class_destroy(lista_tarefas_class);                         // remove the device class
-   unregister_chrdev(majorNumber, DEVICE_NAME);         // unregister the major number
+   device_destroy(lista_tarefas_class, MKDEV(majorNumber, 0));
+   class_unregister(lista_tarefas_class);
+   class_destroy(lista_tarefas_class);
+   unregister_chrdev(majorNumber, DEVICE_NAME);
    printk(KERN_INFO "Lista de Tarefas dando tchau ao kernel\n");
 }
 
 static ssize_t dev_write(struct file *filep, const char *buffer, size_t len, loff_t *offset){
-    lista_tarefas *tmp = (lista_tarefas*) vmalloc(sizeof(lista_tarefas));
+    lista_tarefas *tmp = (lista_tarefas*)vmalloc(sizeof(lista_tarefas));
+    printk(KERN_INFO "ENTROU NA FUNCAO\n");
     tmp->identificador = i;
     sprintf(tmp->descricao, "%s(%zu letters)", buffer, len);
+    printk(KERN_INFO "LEU DO ARQUIVO");
     list_add_tail(&(tmp->list),&(lista->list));
+    printk(KERN_INFO "INSERIU FINAL DA LISTA");
     i++;
 
 
