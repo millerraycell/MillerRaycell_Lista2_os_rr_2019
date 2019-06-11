@@ -11,7 +11,7 @@ int main()
     int abrir_arquivo, escrever_arquivo, numero_atividades, cont = 0;
     char tarefa[BUFFER_LENGHT];
 
-    abrir_arquivo = open("/dev/ebbchar", O_RDWR);
+    abrir_arquivo = open("/dev/lista_tarefas", O_RDWR);
     
     if(abrir_arquivo < 0)
     {
@@ -21,14 +21,14 @@ int main()
     char escolha[3];
     while(1)
     {
-        printf("\tMODULO KERNEL PARA LISTA DE TAREFAS USANDO LIST.H\t");
+        printf("\tMODULO KERNEL PARA LISTA DE TAREFAS USANDO LIST.H\t\n");
         printf("OPÇÕES:\n");
         printf("1 - INSERIR ATIVIDADES NA LISTA\n");
         printf("2 - PRINTAR LISTA DE TAREFAS\n");
         printf("3 - REMOVER ATIVIDADE DA LISTA DE TAREFAS\n");
         printf("0 - SAIR\n");
         printf("DIGITE UMA OPÇÃO:\n");
-        scanf(" %[^\n]s",escolha);
+        scanf(" %[^\n]s",&escolha);
 
         switch (escolha[0])
         {
