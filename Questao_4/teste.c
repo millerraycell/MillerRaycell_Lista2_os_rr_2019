@@ -22,12 +22,12 @@ int main()
     char escolha[3];
     while(1)
     {
-        printf("\tMODULO KERNEL PARA LISTA DE TAREFAS USANDO LIST.H\t");
+        printf("\tMODULO KERNEL PARA LISTA DE TAREFAS USANDO LIST.H\t\n");
         printf("OPÇÕES:\n");
         printf("1 - INSERIR ATIVIDADES NA LISTA\n");
         printf("0 - SAIR\n");
         printf("DIGITE UMA OPÇÃO:\n");
-        scanf(" %[^\n]s",escolha);
+        scanf(" %[^\n]s",&escolha);
 
         switch (escolha[0])
         {
