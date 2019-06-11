@@ -32,8 +32,6 @@ static struct class*  lista_tarefas_class  = NULL;
 static struct device* lista_tarefas_device = NULL;
 
 static ssize_t dev_write(struct file *filep, const char *buffer, size_t len, loff_t *offset);
-extern void print_list(void);
-extern void delete_list(int numero_tarefa);
 static int dev_release(struct inode *inodep, struct file *filep);
 
 
@@ -73,7 +71,6 @@ static int __init lista_tarefas_init(void){
     }
     printk(KERN_INFO "Classe do dispositivo criada corretamente\n");
     INIT_LIST_HEAD(&lista->list);
-    print_list();
 
     return 0;
 }
@@ -92,33 +89,28 @@ static ssize_t dev_write(struct file *filep, const char *buffer, size_t len, lof
     sprintf(tmp->descricao, "%s(%zu letters)", buffer, len);
     list_add_tail(&(tmp->list),&(lista->list));
     i++;
-    return len;
-}
 
-extern void print_list(){
-    lista_tarefas *tmp = (lista_tarefas *) vmalloc(sizeof(lista_tarefas));
-    
+
     list_for_each(head_list, &lista->list)
     {
         tmp = list_entry(head_list, lista_tarefas, list);
         printk(KERN_INFO "Numero tarefa %d\n", lista->identificador);
         printk(KERN_INFO "Descricao: %s\n\n",lista->descricao);
     }  
+    return len;
 }
 
-extern void delete_list(int numero_tarefa){
-    lista_tarefas *tmp = (lista_tarefas *) vmalloc(sizeof(lista_tarefas));
-    list_for_each_safe(head_list, q, &lista->list)
+static int dev_release(struct inode *inodep, struct file *filep){
+	printk(KERN_INFO "ENCERRANDO TODAS AS TAREFAS DA LISTA\n");
+	lista_tarefas *tmp = (lista_tarefas *) vmalloc(sizeof(lista_tarefas));
+    list_for_each(head_list, &lista->list)
     {
         tmp = list_entry(head_list, lista_tarefas, list);
         list_del(head_list);
         //free(tmp);
     }
-}
-
-static int dev_release(struct inode *inodep, struct file *filep){
-   printk(KERN_INFO "Modulo lista de tarefas encerrado com sucesso!\n");
-   return 0;
+    printk(KERN_INFO "Modulo lista de tarefas encerrado com sucesso!\n");
+    return 0;
 }
 
 module_init(lista_tarefas_init);

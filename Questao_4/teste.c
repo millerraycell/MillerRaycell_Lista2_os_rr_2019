@@ -8,7 +8,7 @@
 
 int main()
 {
-    int abrir_arquivo, escrever_arquivo, printar_lista, remover_lista, cont = 0;
+    int abrir_arquivo, escrever_arquivo, numero_atividades, cont = 0;
     char tarefa[BUFFER_LENGHT];
 
     abrir_arquivo = open("/dev/ebbchar", O_RDWR);
@@ -39,23 +39,25 @@ int main()
                 {
                     printf("INSIRA A DESCRIÇÃO DA ATIVIDADE %d:\n",cont++);
                     scanf(" %[^\n]s",tarefa);
-                    escrever_arquivo = write(abrir_arquivo,tarefa,strlen(tarefa),1,0);
+                    escrever_arquivo = write(abrir_arquivo,tarefa,strlen(tarefa));
                     cont++;
                 }
                 cont = 0;
                 break;
-
+			/*
             case '2':
-                printar_lista = write(abrir_arquivo,tarefa,strlen(tarefa),2,0);
+                print_list();
                 break;
 
             case '3':
-                printar_lista = write(abrir_arquivo,tarefa,strlen(tarefa),2,0);
+                print_list();
                 int tarefa_removida;
                 printf("INSIRA A ATIVIDADE QUE DESEJA REMOVER DA LISTA:\n");
                 scanf("%d",&tarefa_removida);
-                printar_lista = write(abrir_arquivo,tarefa,strlen(tarefa),3,tarefa_removida);
+                delete_list(tarefa_removida);
                 break;
+                * 
+                * */
 
             case '0':
                 return 0;
