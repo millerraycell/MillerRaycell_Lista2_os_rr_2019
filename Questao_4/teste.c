@@ -7,10 +7,11 @@
 
 #define BUFFER_LENGHT 100
 
+static char tarefa[BUFFER_LENGHT];
+
 int main()
 {
-    int abrir_arquivo, escrever_arquivo, numero_atividades, cont = 0;
-    char tarefa[BUFFER_LENGHT];
+    int abrir_arquivo, escrever_arquivo, numero_atividades,printar, cont = 0;
 
     abrir_arquivo = open("/dev/lista_tarefas", O_RDWR);
     
@@ -25,6 +26,7 @@ int main()
         printf("\tMODULO KERNEL PARA LISTA DE TAREFAS USANDO LIST.H\t\n");
         printf("OPÇÕES:\n");
         printf("1 - INSERIR ATIVIDADES NA LISTA\n");
+        printf("2 - IMPRIMIR ATIVIDADES NA LISTA\n");
         printf("0 - SAIR\n");
         printf("DIGITE UMA OPÇÃO:\n");
         scanf(" %[^\n]s",&escolha);
@@ -49,11 +51,10 @@ int main()
                 }
                 cont = 0;
                 break;
-			/*
             case '2':
-                print_list();
+                printar = read(abrir_arquivo,tarefa,strlen(tarefa));
                 break;
-
+			/*
             case '3':
                 print_list();
                 int tarefa_removida;

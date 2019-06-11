@@ -32,12 +32,14 @@ static struct class*  lista_tarefas_class  = NULL;
 static struct device* lista_tarefas_device = NULL;
 
 static ssize_t dev_write(struct file *filep, const char *buffer, size_t len, loff_t *offset);
+static ssize_t dev_read(struct file *, char *, size_t, loff_t *);
 static int dev_release(struct inode *inodep, struct file *filep);
 
 
 static struct file_operations fops =
 {
     .owner = THIS_MODULE,
+    .read = dev_read,
     .write = dev_write,
     .release = dev_release,
 };
@@ -87,19 +89,12 @@ static ssize_t dev_write(struct file *filep, const char *buffer, size_t len, lof
     lista_tarefas *tmp = (lista_tarefas*)vmalloc(sizeof(lista_tarefas));
     printk(KERN_INFO "ENTROU NA FUNCAO\n");
     tmp->identificador = i;
-    sprintf(tmp->descricao, "%s(%zu letters)", buffer, len);
+    sprintf(tmp->descricao, "%s", buffer, len);
     printk(KERN_INFO "LEU DO ARQUIVO");
     list_add_tail(&(tmp->list),&(lista->list));
     printk(KERN_INFO "INSERIU FINAL DA LISTA");
     i++;
-
-
-    list_for_each(head_list, &lista->list)
-    {
-        tmp = list_entry(head_list, lista_tarefas, list);
-        printk(KERN_INFO "Numero tarefa %d\n", lista->identificador);
-        printk(KERN_INFO "Descricao: %s\n\n",lista->descricao);
-    }  
+  
     return len;
 }
 
@@ -114,6 +109,27 @@ static int dev_release(struct inode *inodep, struct file *filep){
     }
     printk(KERN_INFO "Modulo lista de tarefas encerrado com sucesso!\n");
     return 0;
+}
+
+static ssize_t dev_read(struct file *filep, char *buffer, size_t len, loff_t *offset){
+   int error_count = 0;
+   lista_tarefas *tmp = (lista_tarefas *) vmalloc(sizeof(lista_tarefas));
+   
+   error_count = copy_to_user(buffer, lista->descricao, len);
+   
+ 
+   if (error_count==0){ 
+	   list_for_each(head_list, &lista->list)
+	   {
+		   tmp = list_entry(head_list, lista_tarefas, list);
+		   printk(KERN_INFO "Numero tarefa %d\n", lista->identificador);
+		   printk(KERN_INFO "Descricao: %s\n\n",lista->descricao);
+		}
+   }
+   else {
+      printk(KERN_INFO "Falha ao enviar\n");
+      return -EFAULT;              // Failed -- return a bad address message (i.e. -14)
+   }
 }
 
 module_init(lista_tarefas_init);
