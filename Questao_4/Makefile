@@ -1,4 +1,4 @@
-obj-m+=lista_tarefas.o
+obj-m+=listaTarefas.o
 
 all:
 	make -C /lib/modules/$(shell uname -r)/build/ M=$(PWD) modules
