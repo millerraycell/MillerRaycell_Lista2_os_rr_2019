@@ -1,8 +1,10 @@
+#include <linux/list.h>
 #include <linux/init.h>
-#include<linux/kernel.h>
-#include<linux/module.h>
-#include<linux/list.h>
-#include<linux/slab.h>
+#include <linux/kernel.h>
+#include <linux/module.h>
+#include <linux/fs.h>
+#include <linux/device.h> 
+#include <linux/uaccess.h> 
 #include <linux/string.h>
 
 MODULE_LICENSE("GPL");
@@ -16,22 +18,30 @@ typedef struct k_list {
 	char descricao[250];
 }lista_tarefas;
 
+static lista_tarefas *tmp = kmalloc (sizeof(lista_tarefas), GFP_KERNEL);
+static lista_tarefas lista;
+static struct list_head *ptr;
+
 static int __init list_init(void) {
-	lista_tarefas lista;
-	struct list_head *ptr;
 	int i;
+	printk(KERN_INFO "TESTE DO FUNCIONAMENTO");
+
+	printk(KERN_INFO "Starting ...\n");
 	
 	INIT_LIST_HEAD(&lista.list);
 
+	printk(KERN_INFO "Starting list...\n");
+
+	
 	for(i = 0; i <= 10; i++)
 	{
-		lista_tarefas tmp;
-		tmp.identificador = i;
-		strcpy(tmp.descricao,"TESTE INSERCAO");
-
-		list_add(&tmp.list, &lista.list);
-		i++;
+		printk(KERN_INFO "INICIANDO LACO");
+		tmp->identificador = i;
+		strcpy(tmp->descricao,"TESTE INSERCAO");
+		list_add(&tmp->list, &lista.list);
+		printk(KERN_INFO "adding to list...\n");
 	}
+	/*
 	
 	list_for_each(ptr, &lista.list)
 	{
@@ -40,6 +50,7 @@ static int __init list_init(void) {
 		printk(KERN_INFO "IDENTIFICADOR: %d\n",tmp2->identificador);
 		printk(KERN_INFO "DESCRICAO: %s\n\n",tmp2->descricao);
 	}
+	*/
 	
 	return 0;
 

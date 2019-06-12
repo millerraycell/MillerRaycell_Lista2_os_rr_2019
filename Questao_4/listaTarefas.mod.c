@@ -22,20 +22,10 @@ __attribute__((section(".gnu.linkonce.this_module"))) = {
 MODULE_INFO(retpoline, "Y");
 #endif
 
-static const struct modversion_info ____versions[]
-__used
-__attribute__((section("__versions"))) = {
-	{ 0xacec71ed, "module_layout" },
-	{ 0xdb7305a1, "__stack_chk_fail" },
-	{ 0x7c32d0f0, "printk" },
-	{ 0x68f31cbd, "__list_add_valid" },
-	{ 0xbdfb6dbb, "__fentry__" },
-};
-
 static const char __module_depends[]
 __used
 __attribute__((section(".modinfo"))) =
 "depends=";
 
 
-MODULE_INFO(srcversion, "19A6278AFF11D1885B58860");
+MODULE_INFO(srcversion, "BEF30529EB60F846C4C0172");
